@@ -1,11 +1,22 @@
 <script>
     import {push} from "svelte-spa-router";
+    import {getContext} from "svelte";
 
     let email = ""
     let password = "";
+    let errorMessage = "";
+
+    const waterfallService = getContext("WaterfallService");
 
     async function login() {
-        push("/waterfalls");
+        let success = await waterfallService.login(email, password);
+        if(success) {
+            push("/waterfalls");
+        }else{
+            email = "";
+            password = "";
+            errorMessage = "Invalid Credentials";
+        }
     }
 </script>
 
@@ -21,4 +32,9 @@
     <div class="field is-grouped">
         <button class="button is-link">Log In</button>
     </div>
+    {#if errorMessage}
+    <div class="section">
+        {errorMessage}
+    </div>
+{/if}
 </form>
