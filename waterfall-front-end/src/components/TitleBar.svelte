@@ -1,4 +1,6 @@
 <script>
+    import {user} from "../stores.js";
+
     export let title = "";
     export let subTitle = "";
 </script>
@@ -13,6 +15,10 @@
     </div>
     <div class="column">
         <i class="fas fa-water fa-3x" style="color:rgb(46,49,220)"></i>
-        <div class="is-size-7">Waterfall-Svelte 0.1.0</div>
+        {#if $user.email}
+            <div class="is-size-7">{$user.email} </div>
+        {:else}
+            <div class="is-size-7">Waterfall-Svelte 0.1.0</div>
+        {/if}
     </div>
 </div>

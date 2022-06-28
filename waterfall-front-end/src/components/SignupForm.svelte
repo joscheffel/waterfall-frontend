@@ -1,13 +1,22 @@
 <script lang="ts">
     import { push } from "svelte-spa-router";
+    import {getContext} from "svelte";
 
     let firstName = "";
     let lastName = "";
     let email = ""
     let password = "";
+    let errorMessage = "";
+
+    const waterfallService = getContext("WaterfallService");
 
     async function signup() {
-        push("/");
+        let success = await waterfallService.signup(firstName, lastName, email, password);
+        if(success){
+            push("/");
+        }else {
+            errorMessage = "Error trying to sign up";
+        }
     }
 </script>
 
@@ -36,3 +45,8 @@
         <button class="button is-link">Sign Up</button>
     </div>
 </form>
+{#if errorMessage}
+    <div class="section">
+        {errorMessage}
+    </div>
+{/if}
