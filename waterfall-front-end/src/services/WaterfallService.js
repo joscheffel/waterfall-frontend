@@ -74,7 +74,16 @@ export class WaterfallService {
 
     async getUserDetails(userid) {
         const user = await axios.get(this.baseUrl + "/api/users/" + userid);
-        console.log(user);
         return user;
+    }
+
+    async getWaterfalls(){
+        try {
+            const waterfalls = await axios.get(this.baseUrl + "/api/waterfalls");
+            return Array.from(waterfalls.data);
+        }catch (err){
+            console.log(err);
+            return [];
+        }
     }
 }
