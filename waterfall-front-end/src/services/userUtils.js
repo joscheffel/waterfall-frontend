@@ -39,6 +39,14 @@ export async function isUserItselfOrAdmin(userid){
     return userItself || admin;
 }
 
+export async function getUserId(){
+    const user = await getUserFromLocalStorage();
+    if(user){
+        return user.userid;
+    }
+    return false;
+}
+
 async function isUserItself(userid) {
     const user = await getUserFromLocalStorage();
     if (user && user.userid === userid) {

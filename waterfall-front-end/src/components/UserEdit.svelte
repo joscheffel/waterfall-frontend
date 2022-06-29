@@ -19,7 +19,6 @@
 
     async function getUser() {
         user = await waterfallService.getUserDetails(userid);
-        console.log(user);
     }
 
     async function checkWhetherAdminPrivilege() {
