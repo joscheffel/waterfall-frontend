@@ -1,15 +1,15 @@
 <script>
-    import WelcomeNavigator from "../components/WelcomeNavigator.svelte";
     import TitleBar from "../components/TitleBar.svelte";
     import SignupForm from "../components/SignupForm.svelte";
+    import Navigator from "../components/Navigator.svelte";
 </script>
 
 <div class="columns is-vcentered">
     <div class="column is-two-thirds">
-        <TitleBar subTitle={"Sign up or Log in"} title={"Waterfall Services"}/>
+        <TitleBar title={"Waterfall Services"} subTitle={"Sign up or Log in"}/>
     </div>
     <div class="column">
-        <WelcomeNavigator/>
+        <Navigator/>
     </div>
 </div>
 

@@ -1,14 +1,21 @@
 import {push} from "svelte-spa-router";
 
 export async function validateAuthentication(detail) {
+    const isCurrentUserAuthenticated = await isAuthenticated();
+    if(!isCurrentUserAuthenticated){
+        await push("/error/not_authenticated");
+    }
+    return isCurrentUserAuthenticated;
+}
+
+export async function isAuthenticated(){
     const waterfallCredentials = localStorage.waterfall;
-    if (waterfallCredentials) {
+    if(waterfallCredentials){
         const savedUser = JSON.parse(waterfallCredentials);
-        if (savedUser.token) {
+        if(savedUser){
             return true;
         }
     }
-    await push("/error/not_authenticated")
     return false;
 }
 

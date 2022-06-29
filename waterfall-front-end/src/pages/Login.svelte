@@ -1,7 +1,7 @@
 <script>
-  import WelcomeNavigator from "../components/WelcomeNavigator.svelte";
   import TitleBar from "../components/TitleBar.svelte";
   import LoginForm from "../components/LoginForm.svelte";
+  import Navigator from "../components/Navigator.svelte";
 </script>
 
 <div class="columns is-vcentered">
@@ -9,7 +9,7 @@
     <TitleBar title={"Waterfall Services"} subTitle={"Sign up or Log in"}/>
   </div>
   <div class="column">
-    <WelcomeNavigator/>
+    <Navigator/>
   </div>
 </div>
 

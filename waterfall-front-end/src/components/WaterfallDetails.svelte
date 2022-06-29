@@ -11,7 +11,6 @@
         const selectedWaterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
         waterfall = selectedWaterfall.data;
         const user = await waterfallService.getUserDetails(waterfall.userid);
-        console.log(user);
         waterfall.user = user.data;
     }
 

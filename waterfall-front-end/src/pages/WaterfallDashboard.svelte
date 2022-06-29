@@ -1,9 +1,9 @@
 <script>
     import TitleBar from "../components/TitleBar.svelte";
-    import MainNavigator from "../components/MainNavigator.svelte";
     import WaterfallList from "../components/WaterfallList.svelte";
     import WaterfallDetails from "../components/WaterfallDetails.svelte";
     import {getContext} from "svelte";
+    import Navigator from "../components/Navigator.svelte";
 
     let selectedWaterfallId = null;
     let waterfallDetails = null;
@@ -19,10 +19,10 @@
 
 <div class="columns is-vcentered">
     <div class="column is-two-thirds">
-        <TitleBar subTitle={"Scroll through the Waterfalls ..."} title={"Waterfall Services"}/>
+        <TitleBar subTitle={"Filter Waterfalls"} title={"Waterfall Services"}/>
     </div>
     <div class="column">
-        <MainNavigator/>
+        <Navigator/>
     </div>
 </div>
 
