@@ -1,5 +1,6 @@
 <script>
     import {createEventDispatcher, getContext, onMount} from "svelte";
+    import {push} from "svelte-spa-router";
 
     const dispatch = createEventDispatcher();
 
@@ -20,8 +21,7 @@
     );
 
     function clicked(user) {
-        selectedUserId = user._id;
-        dispatch("selectedUserId", {userId: selectedUserId})
+        push("/admin/" + user._id);
     }
 
     function filterApplied() {

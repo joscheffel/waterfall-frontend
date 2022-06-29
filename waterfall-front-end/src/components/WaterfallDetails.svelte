@@ -8,10 +8,9 @@
     const waterfallService = getContext("WaterfallService");
 
     export async function selectWaterfall(selectedWaterfallId) {
-        const selectedWaterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
-        waterfall = selectedWaterfall.data;
+        waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
         const user = await waterfallService.getUserDetails(waterfall.userid);
-        waterfall.user = user.data;
+        waterfall.user = user;
     }
 
     async function clickedUser(user) {

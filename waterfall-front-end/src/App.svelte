@@ -10,7 +10,9 @@
     import {setContext} from "svelte";
     import {validateAdmin, validateAuthentication} from "./services/userUtils.js";
     import Error from "./pages/Error.svelte";
-    import Admin from "./pages/Admin.svelte";
+    import Admin from "./pages/AdminDashboard.svelte";
+    import AdminAnalyticsUser from "./pages/AdminAnalyticsUser.svelte";
+    import AdminDashboard from "./pages/AdminDashboard.svelte";
 
     let routes = {
         "/": Main,
@@ -27,10 +29,14 @@
             component: WaterfallDashboard,
             conditions: [validateAuthentication]
         }),
-        "/admin/": wrap({
-            component: Admin,
+        "/admin": wrap({
+            component: AdminDashboard,
             conditions: [validateAuthentication, validateAdmin],
-        })
+        }),
+        "/admin/:userid": wrap({
+            component: AdminAnalyticsUser,
+            conditions: [validateAuthentication, validateAdmin],
+        }),
     }
 
     setContext("WaterfallService", new WaterfallService("http://localhost:4000"));

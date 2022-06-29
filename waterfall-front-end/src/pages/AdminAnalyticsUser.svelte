@@ -1,20 +1,20 @@
 <script>
-    import UserList from "../components/UserList.svelte";
     import Navigator from "../components/Navigator.svelte";
     import TitleBar from "../components/TitleBar.svelte";
+    import AnalyticsUserDetails from "../components/AnalyticsUserDetails.svelte";
 
-    function userGotSelected(event){
-        console.log(event);
-    }
+    export let params;
+    const userid = params.userid;
+
 </script>
 
 <div class="columns is-vcentered">
     <div class="column is-two-thirds">
-        <TitleBar title={"Waterfall Services"} subTitle={"Administrate Users"}/>
+        <TitleBar title={"Waterfall Services"} subTitle={"Analyse User"}/>
     </div>
     <div class="column">
         <Navigator/>
     </div>
 </div>
 
-<UserList on:selectedUserId={userGotSelected}/>
+<AnalyticsUserDetails {userid}/>
