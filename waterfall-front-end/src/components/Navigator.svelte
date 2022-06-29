@@ -1,14 +1,16 @@
 <script>
-    import {isAdmin, isAuthenticated} from "../services/userUtils.js";
+    import {getUserId, isAdmin, isAuthenticated} from "../services/userUtils.js";
 
     let authenticated = false;
     let admin = false;
+    let userid;
 
     checkAuthentication();
 
     async function checkAuthentication() {
         authenticated = await isAuthenticated();
         admin = await isAdmin();
+        userid = await getUserId();
     }
 </script>
 
@@ -23,6 +25,11 @@
         {#if admin}
             <a href="/#/admin" class="column is-2">
                 <i class="fas fa-users-cog fa-2x" style="color:rgb(190,82,49)"></i>
+            </a>
+        {/if}
+        {#if userid}
+            <a href="/#/users/{userid}" class="column is-2">
+                <i class="fas fa-user-edit fa-2x" style="color:rgb(70,81,156)"></i>
             </a>
         {/if}
         <a href="/#/logout" class="column is-2">

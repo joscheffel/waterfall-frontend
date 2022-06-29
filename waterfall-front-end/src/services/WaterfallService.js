@@ -81,14 +81,27 @@ export class WaterfallService {
         return [];
     }
 
+    async getUserAnalytics(userid){
+        const userAnalytics = await axios.get(this.baseUrl + "/admin/api/analytics/" + userid);
+        return userAnalytics.data;
+    }
+
     async getUserDetails(userid) {
         const user = await axios.get(this.baseUrl + "/api/users/" + userid);
-        return user;
+        return user.data;
+    }
+
+    async updateUser(user){
+        try{
+            const u = await axios.put(this.baseUrl + "/api/users/" + user._id, user);
+        }catch (err){
+            console.log(err);
+        }
     }
 
     async getWaterfallDetails(waterfallId){
         const waterfall = await axios.get(this.baseUrl + "/api/waterfalls/" + waterfallId);
-        return waterfall;
+        return waterfall.data;
     }
 
     async getWaterfalls(){
