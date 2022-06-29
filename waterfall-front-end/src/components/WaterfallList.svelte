@@ -1,6 +1,7 @@
 <script>
-    import {getContext, onMount} from "svelte";
-    import {push} from "svelte-spa-router";
+    import {createEventDispatcher, getContext, onMount} from "svelte";
+
+    const dispatch = createEventDispatcher();
 
     let waterfallFilterList = [];
     let waterfallList = [];
@@ -9,17 +10,8 @@
     const sizes = ["All", "Small", "Medium", "Large"];
     let continentsSelect;
     let sizeSelect;
-    // const continents = [
-    //     {"Europe": true},
-    //     {"North America": true},
-    //     {"South America": true},
-    //     {"Africa": true},
-    //     {"Asia": true},
-    //     {"Australia": true}];
-    // const sizes = [
-    //     {"Small": true},
-    //     {"Medium": true},
-    //     {"Large": true}];
+
+    let selectedWaterfallId = null;
 
     const waterfallService = getContext("WaterfallService");
 
@@ -30,7 +22,9 @@
     );
 
     function clicked(waterfall) {
-        push("/waterfalls/" + waterfall._id);
+        selectedWaterfallId = waterfall._id;
+        dispatch("selectedWaterfallId", {waterfallId: selectedWaterfallId})
+        // push("/waterfalls/" + waterfall._id);
     }
 
     function filterApplied() {
@@ -58,26 +52,26 @@
     <p class="subtitle is-size-4 is-italic">Filter the Waterfalls</p>
 
     <div class="columns">
-    <div class="column">
-        <div class="level-item">
-            <p class="subtitle is-5">Continents</p>
-        </div>
-        <div class="level-item">
-            <div class="control has-icons-left">
-                <div class="select is-primary">
-                    <select bind:this={continentsSelect}>
-                        {#each continents as continent}
-                            <option>{continent}</option>
-                        {/each}
-                    </select>
+        <div class="column">
+            <div class="level-item">
+                <p class="subtitle is-5">Continents</p>
+            </div>
+            <div class="level-item">
+                <div class="control has-icons-left">
+                    <div class="select is-primary">
+                        <select bind:this={continentsSelect}>
+                            {#each continents as continent}
+                                <option>{continent}</option>
+                            {/each}
+                        </select>
 
-                    <span class="icon is-small is-left">
+                        <span class="icon is-small is-left">
                     <i class="fas fa-globe"></i>
                 </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="column">
             <div class="level-item">

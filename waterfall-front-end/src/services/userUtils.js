@@ -1,5 +1,4 @@
 import {push} from "svelte-spa-router";
-import {getContext} from "svelte";
 
 export async function validateAuthentication(detail) {
     const waterfallCredentials = localStorage.waterfall;
@@ -13,15 +12,21 @@ export async function validateAuthentication(detail) {
     return false;
 }
 
-export async function validateAdmin(detail){
+export async function validateAdmin(detail) {
+    const isCurrentUserAdmin = await isAdmin();
+    if(!isCurrentUserAdmin) {
+        await push("/error/no_admin_privileges")
+    }
+    return isCurrentUserAdmin;
+}
+
+export async function isAdmin() {
     const waterfallCredentials = localStorage.waterfall;
-    if(waterfallCredentials){
+    if (waterfallCredentials) {
         const savedUser = JSON.parse(waterfallCredentials);
-        console.log(savedUser);
-        if(savedUser.isAdmin){
+        if (savedUser.isAdmin) {
             return true;
         }
     }
-    await push("/error/no_admin_privileges")
     return false;
 }
