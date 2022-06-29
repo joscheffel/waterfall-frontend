@@ -91,6 +91,14 @@ export class WaterfallService {
         return user.data;
     }
 
+    async updateUser(user){
+        try{
+            const u = await axios.put(this.baseUrl + "/api/users/" + user._id, user);
+        }catch (err){
+            console.log(err);
+        }
+    }
+
     async getWaterfallDetails(waterfallId){
         const waterfall = await axios.get(this.baseUrl + "/api/waterfalls/" + waterfallId);
         return waterfall.data;

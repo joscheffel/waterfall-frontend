@@ -1,5 +1,6 @@
 <script>
     import {getContext} from "svelte";
+    import {push} from "svelte-spa-router";
 
     export let userid = null;
     let user;
@@ -16,7 +17,7 @@
     }
 
     function edit(userid){
-        console.log(userid);
+        push("/users/" + userid);
     }
 </script>
 
