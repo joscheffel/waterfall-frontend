@@ -2,6 +2,19 @@
     import TitleBar from "../components/TitleBar.svelte";
     import MainNavigator from "../components/MainNavigator.svelte";
     import WaterfallList from "../components/WaterfallList.svelte";
+    import WaterfallDetails from "../components/WaterfallDetails.svelte";
+    import {getContext} from "svelte";
+
+    let selectedWaterfallId = null;
+    let waterfallDetails = null;
+
+    const waterfallService = getContext("WaterfallService");
+
+    async function waterfallSelected(event) {
+        selectedWaterfallId = event.detail.waterfallId;
+        waterfallDetails.selectWaterfall(selectedWaterfallId);
+    }
+
 </script>
 
 <div class="columns is-vcentered">
@@ -14,11 +27,11 @@
 </div>
 
 <div class="columns">
-    <div class="column has-text-centered">
-        <p>Here could be maps</p>
+    <div class="column box has-text-centered is-half m-3">
+        <WaterfallDetails bind:this="{waterfallDetails}"/>
     </div>
     <div class="column box has-text-centered">
         <h1 class="title is-4">All the Waterfalls around the globe</h1>
-        <WaterfallList/>
+        <WaterfallList on:selectedWaterfallId={waterfallSelected}/>
     </div>
 </div>
