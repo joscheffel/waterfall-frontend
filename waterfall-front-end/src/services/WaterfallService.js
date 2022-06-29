@@ -23,7 +23,6 @@ export class WaterfallService {
         try {
             const response = await axios.post(`${this.baseUrl}/api/users/authenticate`, {email, password});
             axios.defaults.headers.common.Authorization = "Bearer" + response.data.token;
-            console.log(response);
             if (response.data.success) {
                 user.set({
                     email: email,
@@ -72,6 +71,16 @@ export class WaterfallService {
         }
     }
 
+    async getUserAnalyticsList(){
+        try {
+            const userAnalyticsList = await axios.get(this.baseUrl + "/admin/api/analytics");
+            return Array.from(userAnalyticsList.data);
+        }catch (err){
+            console.log(err);
+        }
+        return [];
+    }
+
     async getUserDetails(userid) {
         const user = await axios.get(this.baseUrl + "/api/users/" + userid);
         return user;
@@ -88,7 +97,7 @@ export class WaterfallService {
             return Array.from(waterfalls.data);
         }catch (err){
             console.log(err);
-            return [];
         }
+        return [];
     }
 }

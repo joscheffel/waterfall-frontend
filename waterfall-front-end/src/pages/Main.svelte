@@ -1,7 +1,7 @@
 <script>
-    import WelcomeNavigator from "../components/WelcomeNavigator.svelte";
     import TitleBar from "../components/TitleBar.svelte";
     import {getContext} from "svelte";
+    import Navigator from "../components/Navigator.svelte";
 
     const waterfallService = getContext("WaterfallService");
     waterfallService.logout();
@@ -12,7 +12,7 @@
         <TitleBar title={"Waterfall Services"} subTitle={"Sign up or Log in"}/>
     </div>
     <div class="column">
-        <WelcomeNavigator/>
+        <Navigator/>
     </div>
 </div>
 

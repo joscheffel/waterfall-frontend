@@ -1,15 +1,15 @@
 <script>
     import WaterfallForm from "../components/WaterfallForm.svelte";
     import TitleBar from "../components/TitleBar.svelte";
-    import MainNavigator from "../components/MainNavigator.svelte";
+    import Navigator from "../components/Navigator.svelte";
 </script>
 
 <div class="columns is-vcentered">
     <div class="column is-two-thirds">
-        <TitleBar subTitle={"Please add a new Waterfall"} title={"Waterfall Services"}/>
+        <TitleBar title={"Waterfall Services"} subTitle={"Add Waterfalls"}/>
     </div>
     <div class="column">
-        <MainNavigator/>
+        <Navigator/>
     </div>
 </div>
 
