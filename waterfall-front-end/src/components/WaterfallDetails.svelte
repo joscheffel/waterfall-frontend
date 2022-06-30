@@ -26,19 +26,20 @@
         }
     }
 
-    function edit(waterfallid){
+    function edit(waterfallid) {
         push("/waterfalls/edit/" + waterfallid);
     }
 </script>
 
 {#if waterfall}
-    {#if privileged}
-        <div>
-        <button class="button is-primary is-light level-left" on:click={edit(waterfall._id)}>EDIT<i
-                class="fas fa-edit ml-1"></i>
-        </button>
-        </div>
-    {/if}
+    <div class="level">
+        {#if privileged}
+            <button class="button is-primary is-light level-left" on:click={edit(waterfall._id)}>EDIT<i
+                    class="fas fa-edit ml-1"></i>
+            </button>
+        {/if}
+        <span class="tag is-light level-right">lat: {waterfall.location.lat}, long: {waterfall.location.long}</span>
+    </div>
     <h1 class="title">{waterfall.name}
         {#if waterfall.user}
                 <span on:click={clickedUser(waterfall.user)}
@@ -59,8 +60,6 @@
             <span class="tag is-info">{waterfall.categories.size}</span>
         </div>
     </div>
-
-    <span class="tag is-light">lat: {waterfall.location.lat}, long: {waterfall.location.long}</span>
 {:else }
     <p>Select a waterfall.</p>
 {/if}

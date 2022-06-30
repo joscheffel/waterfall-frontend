@@ -23,8 +23,8 @@
 
     function clicked(waterfall) {
         selectedWaterfallId = waterfall._id;
-        dispatch("selectedWaterfallId", {waterfallId: selectedWaterfallId})
-        // push("/waterfalls/" + waterfall._id);
+        dispatch("selectedWaterfallId", {waterfallId: selectedWaterfallId});
+        dispatch("location", {lat: waterfall.location.lat, lng: waterfall.location.long});
     }
 
     function filterApplied() {
@@ -101,12 +101,13 @@
 {#if Object.keys(waterfallFilterList).length === 0}
     <p><i class="far fa-folder-open"/> <span>No waterfalls found for these filters</span></p>
 {:else}
-
-    <table class="table is-fullwidth">
+    <div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
         <thead>
         <th>Name</th>
         <th>Categories</th>
         </thead>
+
         <tbody>
         {#each waterfallFilterList as waterfall}
             <tr on:click={clicked(waterfall)}>
@@ -119,6 +120,19 @@
                 </td>
             </tr>
         {/each}
+
         </tbody>
     </table>
+    </div>
 {/if}
+
+
+<style>
+    .scrollContainer {
+        max-height: 13em;
+        overflow: auto;
+    }
+    tr {
+        min-width: 100%;
+    }
+</style>

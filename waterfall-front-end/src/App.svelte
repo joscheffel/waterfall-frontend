@@ -15,6 +15,7 @@
     import AdminDashboard from "./pages/AdminDashboard.svelte";
     import User from "./pages/User.svelte";
     import WaterfallEdit from "./pages/WaterfallEdit.svelte";
+    import WaterfallMap from "./pages/WaterfallMap.svelte";
 
     let routes = {
         "/": Main,
@@ -35,6 +36,11 @@
             component: WaterfallDashboard,
             conditions: [validateAuthentication]
         }),
+        "/waterfalls/map": wrap({
+            component: WaterfallMap,
+            conditions: [validateAuthentication],
+        })
+        ,
         "/admin": wrap({
             component: AdminDashboard,
             conditions: [validateAuthentication, validateAdmin],
