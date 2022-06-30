@@ -1,30 +1,49 @@
 <script>
     import {getContext} from "svelte";
     import {push} from "svelte-spa-router";
-    import {isAdmin} from "../services/userUtils.js";
+    import {isAdmin, isUserItselfOrAdmin} from "../services/userUtils.js";
 
     let waterfall = null;
 
     const waterfallService = getContext("WaterfallService");
 
+    let privileged;
+
     export async function selectWaterfall(selectedWaterfallId) {
         waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
         const user = await waterfallService.getUserDetails(waterfall.userid);
+        checkPrivileges();
         waterfall.user = user;
+    }
+
+    async function checkPrivileges() {
+        privileged = await isUserItselfOrAdmin(waterfall.userid);
     }
 
     async function clickedUser(user) {
         if (await isAdmin()) {
-            push("/admin/" + user._id);
+            await push("/admin/" + user._id);
         }
+    }
+
+    function edit(waterfallid){
+        push("/waterfalls/edit/" + waterfallid);
     }
 </script>
 
 {#if waterfall}
+    {#if privileged}
+        <div>
+        <button class="button is-primary is-light level-left" on:click={edit(waterfall._id)}>EDIT<i
+                class="fas fa-edit ml-1"></i>
+        </button>
+        </div>
+    {/if}
     <h1 class="title">{waterfall.name}
         {#if waterfall.user}
                 <span on:click={clickedUser(waterfall.user)}
-                      class="tag has-text-right is-info is-light">By {waterfall.user.firstName[0]}. {waterfall.user.lastName}</span>
+                      class="tag has-text-right is-info is-light">By {waterfall.user.firstName[0]}
+                    . {waterfall.user.lastName}</span>
         {/if}
     </h1>
 

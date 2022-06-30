@@ -33,9 +33,8 @@ export async function isAdmin() {
 }
 
 export async function isUserItselfOrAdmin(userid){
-    const userItself = isUserItself(userid);
-    const admin = isAdmin();
-
+    const userItself = await isUserItself(userid);
+    const admin = await isAdmin();
     return userItself || admin;
 }
 

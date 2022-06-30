@@ -6,11 +6,26 @@
     import {push} from "svelte-spa-router";
 
     export let params;
-    const userid = params.userid;
+    let userid;
+    let userEdit;
+    setUserId();
+
+    $: params, setUserId();
+
+
+    async function setUserId() {
+        userid = params.userid;
+        if(userEdit) {
+            userEdit.setUserId(userid);
+        }
+    }
+
+
     redirectForbiddenUsers();
-    async function redirectForbiddenUsers(){
-        const allowed = isUserItselfOrAdmin(userid);
-        if(!allowed){
+
+    async function redirectForbiddenUsers() {
+        const allowed = await isUserItselfOrAdmin(userid);
+        if (!allowed) {
             await push("/error/forbidden");
         }
     }
@@ -25,4 +40,6 @@
     </div>
 </div>
 
-<UserEdit {userid}/>
+{#if userid}
+    <UserEdit bind:this={userEdit} {userid}/>
+{/if}

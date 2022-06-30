@@ -14,6 +14,7 @@
     import AdminAnalyticsUser from "./pages/AdminAnalyticsUser.svelte";
     import AdminDashboard from "./pages/AdminDashboard.svelte";
     import User from "./pages/User.svelte";
+    import WaterfallEdit from "./pages/WaterfallEdit.svelte";
 
     let routes = {
         "/": Main,
@@ -24,6 +25,10 @@
         "/error/:error_message?": Error,
         "/waterfalls": wrap({
             component: Waterfall,
+            conditions: [validateAuthentication]
+        }),
+        "/waterfalls/edit/:waterfallid": wrap({
+            component: WaterfallEdit,
             conditions: [validateAuthentication]
         }),
         "/waterfalls/dashboard": wrap({

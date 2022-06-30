@@ -1,5 +1,6 @@
 import axios from "axios";
 import {user} from "../stores.js";
+import {getUserId} from "./userUtils.js";
 
 export class WaterfallService {
     baseUrl = "";
@@ -71,17 +72,17 @@ export class WaterfallService {
         }
     }
 
-    async getUserAnalyticsList(){
+    async getUserAnalyticsList() {
         try {
             const userAnalyticsList = await axios.get(this.baseUrl + "/admin/api/analytics");
             return Array.from(userAnalyticsList.data);
-        }catch (err){
+        } catch (err) {
             console.log(err);
         }
         return [];
     }
 
-    async getUserAnalytics(userid){
+    async getUserAnalytics(userid) {
         const userAnalytics = await axios.get(this.baseUrl + "/admin/api/analytics/" + userid);
         return userAnalytics.data;
     }
@@ -91,26 +92,79 @@ export class WaterfallService {
         return user.data;
     }
 
-    async updateUser(user){
-        try{
+    async updateUser(user) {
+        try {
             const u = await axios.put(this.baseUrl + "/api/users/" + user._id, user);
-        }catch (err){
+            return u;
+        } catch (err) {
             console.log(err);
+            if(err.message) {
+                return {error: err.name, message: err.message};
+            }else{
+                return {error: err.response.data.error, message: err.response.data.message};
+            }
         }
     }
 
-    async getWaterfallDetails(waterfallId){
+    async getWaterfallDetails(waterfallId) {
         const waterfall = await axios.get(this.baseUrl + "/api/waterfalls/" + waterfallId);
         return waterfall.data;
     }
 
-    async getWaterfalls(){
+    async getWaterfalls() {
         try {
             const waterfalls = await axios.get(this.baseUrl + "/api/waterfalls");
             return Array.from(waterfalls.data);
-        }catch (err){
+        } catch (err) {
             console.log(err);
         }
         return [];
+    }
+
+    async createWaterfall(name, description, continent, size, lat, long) {
+        const userid = await getUserId();
+        const createWaterfall = {
+            name: name,
+            description: description,
+            categories: {
+                continent: continent,
+                size: size,
+            },
+            location: {
+                lat: lat,
+                long: long,
+            },
+            userid: userid,
+        }
+        try {
+            const waterfall = await axios.post(this.baseUrl + "/api/waterfalls", createWaterfall);
+            return waterfall.data;
+        } catch (err) {
+            return {error: err.response.data.error, message: err.response.data.message};
+        }
+    }
+
+    async updateWaterfall(id, userid, v, name, description, continent, size, lat, long) {
+        const createWaterfall = {
+            _id: id,
+            __v: v,
+            name: name,
+            description: description,
+            categories: {
+                continent: continent,
+                size: size,
+            },
+            location: {
+                lat: lat,
+                long: long,
+            },
+            userid: userid,
+        }
+        try {
+            const waterfall = await axios.put(this.baseUrl + "/api/waterfalls/" + id, createWaterfall);
+            return waterfall.data;
+        } catch (err) {
+            return {error: err.response.data.error, message: err.response.data.message};
+        }
     }
 }

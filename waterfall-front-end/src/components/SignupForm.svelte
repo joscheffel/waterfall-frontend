@@ -13,7 +13,7 @@
     async function signup() {
         let success = await waterfallService.signup(firstName, lastName, email, password);
         if(success){
-            push("/");
+            await push("/");
         }else {
             errorMessage = "Error trying to sign up";
         }
