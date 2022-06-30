@@ -13,7 +13,7 @@
     }
 
     function clickedWaterfall(waterfallId) {
-        console.log(waterfallId);
+        push("/waterfalls/edit/" + waterfallId);
     }
 
     function edit(userid){

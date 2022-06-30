@@ -11,7 +11,7 @@
     async function login() {
         let success = await waterfallService.login(email, password);
         if(success) {
-            push("/waterfalls");
+            await push("/waterfalls");
         }else{
             email = "";
             password = "";

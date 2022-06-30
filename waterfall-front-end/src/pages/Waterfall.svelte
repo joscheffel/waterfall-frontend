@@ -17,8 +17,7 @@
     <div class="column has-text-centered">
         <p>Here could be a map at a later point </p>
     </div>
-    <div class="column box has-text-centered">
-        <h1 class="title is-4">Create a Waterfall</h1>
-        <WaterfallForm/>
+    <div class="column has-text-centered">
+        <WaterfallForm title="Create a Waterfall"/>
     </div>
 </div>
