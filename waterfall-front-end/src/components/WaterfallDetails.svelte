@@ -13,11 +13,13 @@
     let privileged;
 
     export async function selectWaterfall(selectedWaterfallId) {
-        waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
-        const user = await waterfallService.getUserDetails(waterfall.userid);
-        await checkPrivileges();
-        waterfall.user = user;
-        waterfallId = waterfall._id;
+        if (selectedWaterfallId) {
+            waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
+            const user = await waterfallService.getUserDetails(waterfall.userid);
+            await checkPrivileges();
+            waterfall.user = user;
+            waterfallId = waterfall._id;
+        }
     }
 
     async function checkPrivileges() {
