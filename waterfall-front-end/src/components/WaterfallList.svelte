@@ -23,8 +23,8 @@
 
     function clicked(waterfall) {
         selectedWaterfallId = waterfall._id;
-        dispatch("selectedWaterfallId", {waterfallId: selectedWaterfallId})
-        // push("/waterfalls/" + waterfall._id);
+        dispatch("selectedWaterfallId", {waterfallId: selectedWaterfallId});
+        dispatch("location", {lat: waterfall.location.lat, lng: waterfall.location.long});
     }
 
     function filterApplied() {
@@ -101,24 +101,43 @@
 {#if Object.keys(waterfallFilterList).length === 0}
     <p><i class="far fa-folder-open"/> <span>No waterfalls found for these filters</span></p>
 {:else}
+    <div class="table-container tableFixHead">
+        <table class="table is-fullwidth is-hoverable">
 
-    <table class="table is-fullwidth">
-        <thead>
-        <th>Name</th>
-        <th>Categories</th>
-        </thead>
-        <tbody>
-        {#each waterfallFilterList as waterfall}
-            <tr on:click={clicked(waterfall)}>
-                <td>
-                    {waterfall.name}
-                </td>
-                <td>
-                    <span class="tag is-primary">{waterfall.categories.continent}</span>
-                    <span class="tag is-info">{waterfall.categories.size}</span>
-                </td>
-            </tr>
-        {/each}
-        </tbody>
-    </table>
+            <thead>
+            <th>Name</th>
+            <th>Categories</th>
+            </thead>
+
+            <tbody>
+                {#each waterfallFilterList as waterfall}
+                    <tr on:click={clicked(waterfall)}>
+                        <td>
+                            {waterfall.name}
+                        </td>
+                        <td>
+                            <span class="tag is-primary">{waterfall.categories.continent}</span>
+                            <span class="tag is-info">{waterfall.categories.size}</span>
+                        </td>
+                    </tr>
+                {/each}
+
+            </tbody>
+        </table>
+    </div>
 {/if}
+
+
+<style>
+    .scrollContainer {
+        max-height: 13em;
+        overflow: auto;
+    }
+
+    .tableFixHead          { overflow: auto; height: 20em; }
+    .tableFixHead thead th { position: sticky; top: 0; z-index: 1; background: white}
+
+    tr {
+        min-width: 100%;
+    }
+</style>

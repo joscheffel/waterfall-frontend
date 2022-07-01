@@ -1,24 +1,27 @@
 <script>
-    import {getContext, onMount} from "svelte";
+    import {createEventDispatcher, getContext, onMount} from "svelte";
     import {isUserItselfOrAdmin} from "../services/userUtils.js";
     import {push} from "svelte-spa-router";
+    import Coordinates from "./Coordinates.svelte";
+    import ImageUpload from "./ImageUpload.svelte";
 
     export let waterfallid = false;
     export let title = null;
 
     let buttonName = "Create";
-    if(waterfallid){
+    if (waterfallid) {
         buttonName = "Update";
     }
 
     let waterfall;
 
     const waterfallService = getContext("WaterfallService");
+    const dispatch = createEventDispatcher();
 
     let name;
     let description;
     let lat;
-    let long;
+    let lng;
 
     const continents = ["Choose", "Europe", "North America", "South America", "Africa", "Asia", "Australia"];
     const sizes = ["Choose", "Small", "Medium", "Large"];
@@ -40,7 +43,7 @@
     }
 
     onMount(async () => {
-        if(waterfallid){
+        if (waterfallid) {
             waterfall = await waterfallService.getWaterfallDetails(waterfallid);
             await checkWhetherAdminOrWaterfallCreatingUser();
             await setValues();
@@ -50,8 +53,8 @@
     function setValues() {
         name.value = waterfall.name;
         description.value = waterfall.description;
-        lat.value = waterfall.location.lat;
-        long.value = waterfall.location.long;
+        lat = waterfall.location.lat;
+        lng = waterfall.location.long;
 
         const continentIndex = continents.indexOf(waterfall.categories.continent);
         continentsSelect.selectedIndex = continentIndex;
@@ -79,9 +82,9 @@
 
         let response;
         if (waterfall) {
-            response = await waterfallService.updateWaterfall(waterfall._id, waterfall.userid, waterfall.__v, name.value, description.value, selectedContinent, selectedSize, lat.value, long.value);
+            response = await waterfallService.updateWaterfall(waterfall._id, waterfall.userid, waterfall.__v, name.value, description.value, selectedContinent, selectedSize, lat, lng);
         } else {
-            response = await waterfallService.createWaterfall(name.value, description.value, selectedContinent, selectedSize, lat.value, long.value);
+            response = await waterfallService.createWaterfall(name.value, description.value, selectedContinent, selectedSize, lat, lng);
         }
         if (response.error) {
             errorMessages = [];
@@ -89,8 +92,22 @@
         }
 
         if (response._id) {
-            await push("/waterfalls/dashboard");
+            waterfallid = response._id;
+            dispatch("message", {waterfall: response});
         }
+    }
+
+    function moveTo() {
+        dispatch("moveToLocation", {lat: lat, lng: lng});
+    }
+
+    export function setCurrentCenter(location) {
+        lat = location.lat;
+        lng = location.lng;
+    }
+
+    function askForCenter() {
+        dispatch("getCenter");
     }
 </script>
 
@@ -151,25 +168,10 @@
         </div>
     </div>
 
-
-    <div class="columns">
-        <div class="column">
-            <div class="field">
-                <label class="label">Latitude</label>
-                <div class="control">
-                    <input class="input" type="text" bind:this={lat} placeholder="76.54321">
-                </div>
-            </div>
-        </div>
-
-        <div class="column">
-            <div class="field">
-                <label class="label">Longitude</label>
-                <div class="control">
-                    <input class="input" type="text" bind:this={long} placeholder="-12.34567">
-                </div>
-            </div>
-        </div>
+    <div class="box">
+        <Coordinates bind:lat={lat} bind:lng={lng}/>
+        <button class="button is-primary is-light is-2" on:click={moveTo}>Check Coordinates</button>
+        <button class="button is-info is-light is-2" on:click={askForCenter}>Set Coordinates of Map Center</button>
     </div>
 
     {#if errorMessages.length > 0}
@@ -191,3 +193,5 @@
         </div>
     </div>
 </div>
+
+<ImageUpload waterfallid={waterfallid}/>

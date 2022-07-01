@@ -32,6 +32,9 @@
                 <i class="fas fa-user-edit fa-2x" style="color:rgb(70,81,156)"></i>
             </a>
         {/if}
+        <a href="/#/waterfalls/map" class="column is-2">
+            <i class="fas fa-map-marked-alt fa-2x" style="color:rgb(70,81,156)"></i>
+        </a>
         <a href="/#/logout" class="column is-2">
             <i class="fas fa-sign-out-alt fa-2x" style="color:rgb(156, 70, 128)"></i>
         </a>

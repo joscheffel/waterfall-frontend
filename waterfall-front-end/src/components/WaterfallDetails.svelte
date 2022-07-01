@@ -2,8 +2,11 @@
     import {getContext} from "svelte";
     import {push} from "svelte-spa-router";
     import {isAdmin, isUserItselfOrAdmin} from "../services/userUtils.js";
+    import ImageList from "./ImageList.svelte";
 
     let waterfall = null;
+
+    let waterfallId;
 
     const waterfallService = getContext("WaterfallService");
 
@@ -12,8 +15,9 @@
     export async function selectWaterfall(selectedWaterfallId) {
         waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
         const user = await waterfallService.getUserDetails(waterfall.userid);
-        checkPrivileges();
+        await checkPrivileges();
         waterfall.user = user;
+        waterfallId = waterfall._id;
     }
 
     async function checkPrivileges() {
@@ -26,19 +30,20 @@
         }
     }
 
-    function edit(waterfallid){
+    function edit(waterfallid) {
         push("/waterfalls/edit/" + waterfallid);
     }
 </script>
 
 {#if waterfall}
-    {#if privileged}
-        <div>
-        <button class="button is-primary is-light level-left" on:click={edit(waterfall._id)}>EDIT<i
-                class="fas fa-edit ml-1"></i>
-        </button>
-        </div>
-    {/if}
+    <div class="level">
+        {#if privileged}
+            <button class="button is-primary is-light level-left" on:click={edit(waterfall._id)}>EDIT<i
+                    class="fas fa-edit ml-1"></i>
+            </button>
+        {/if}
+        <span class="tag is-light level-right">lat: {waterfall.location.lat}, long: {waterfall.location.long}</span>
+    </div>
     <h1 class="title">{waterfall.name}
         {#if waterfall.user}
                 <span on:click={clickedUser(waterfall.user)}
@@ -46,7 +51,6 @@
                     . {waterfall.user.lastName}</span>
         {/if}
     </h1>
-
 
     <div class="columns">
         <div class="column">
@@ -60,7 +64,7 @@
         </div>
     </div>
 
-    <span class="tag is-light">lat: {waterfall.location.lat}, long: {waterfall.location.long}</span>
+    <ImageList waterfallId={waterfallId}/>
 {:else }
     <p>Select a waterfall.</p>
 {/if}
