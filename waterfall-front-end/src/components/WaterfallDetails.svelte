@@ -28,12 +28,12 @@
 
     async function clickedUser(user) {
         if (await isAdmin()) {
-            await push("/admin/" + user._id);
+            await push(`/admin/${user._id}`);
         }
     }
 
     function edit(waterfallid) {
-        push("/waterfalls/edit/" + waterfallid);
+        push(`/waterfalls/edit/${waterfallid}`);
     }
 </script>
 

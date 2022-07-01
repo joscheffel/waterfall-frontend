@@ -11,7 +11,7 @@
     const dispatch = createEventDispatcher();
 
     onMount(async () => {
-        loadImage();
+        await loadImage();
     });
 
     async function loadImage(){
