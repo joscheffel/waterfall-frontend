@@ -2,7 +2,6 @@
     import {getContext} from "svelte";
     import {push} from "svelte-spa-router";
     import {isAdmin, isUserItselfOrAdmin} from "../services/userUtils.js";
-    import ImageList from "./ImageList.svelte";
     import ImageGallery from "./ImageGallery.svelte";
 
     let waterfall = null;

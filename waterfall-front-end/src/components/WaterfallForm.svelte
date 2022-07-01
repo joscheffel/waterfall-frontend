@@ -4,6 +4,7 @@
     import {push} from "svelte-spa-router";
     import Coordinates from "./Coordinates.svelte";
     import ImageUpload from "./ImageUpload.svelte";
+    import ImageDeletionList from "./ImageDeletionList.svelte";
 
     export let waterfallid = false;
     export let title = null;
@@ -31,9 +32,7 @@
     let errorMessages = [];
 
     let privileged;
-
-    async function getWaterfall() {
-    }
+    let imageDeletionList;
 
     async function checkWhetherAdminOrWaterfallCreatingUser() {
         privileged = await isUserItselfOrAdmin(waterfall.userid);
@@ -194,4 +193,5 @@
     </div>
 </div>
 
-<ImageUpload waterfallid={waterfallid}/>
+<ImageUpload waterfallid={waterfallid} on:imageUploaded={() => {imageDeletionList.reload()}}/>
+<ImageDeletionList bind:this={imageDeletionList} waterfallId={waterfallid}/>

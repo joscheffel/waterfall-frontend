@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from "svelte";
+    import {createEventDispatcher, getContext} from "svelte";
 
     export let waterfallid;
 
@@ -10,6 +10,7 @@
     const waterfallService = getContext("WaterfallService");
 
     let images = [];
+    const dispatch = createEventDispatcher();
 
     const onFileSelected = (e) => {
         let image = e.target.files[0];
@@ -46,6 +47,8 @@
         images = [];
         images = errorUploads;
         unique = {};
+
+        dispatch("imageUploaded", {});
     }
 
     function remove(index) {

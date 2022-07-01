@@ -8,6 +8,8 @@
     let selectedUserId = null;
     let userList;
     let userFilterList = [];
+    let delUser;
+    let modalErrorMessage;
 
     const userSelectPossibilities = ["All", "User", "Admin"];
     let appliedFilter = "";
@@ -81,7 +83,53 @@
         });
     }
 
+    function del(user) {
+        delUser = user;
+    }
+
+    function close() {
+        delUser = "";
+    }
+
+    async function deleteUser(user) {
+        const response = waterfallService.deleteUser(user._id);
+        if (response.error) {
+            modalErrorMessage = response.message;
+        }
+        const index = userList.indexOf(user);
+        if (index >= 0) {
+            userList.splice(index, 1);
+            filterApplied();
+        }
+        close();
+    }
+
 </script>
+
+{#if delUser}
+    <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <h2 class="title is-3">Do you really want to delete the {delUser.scope} <span
+                        class="is-italic"> {delUser.name}</span></h2>
+                <button class="button is-danger" on:click={deleteUser(delUser)}>Delete {delUser.name}</button>
+                <button class="button is-success" on:click={close}>No, please cancel.</button>
+                {#if modalErrorMessage}
+                    <div class="message is-danger">
+                        <div class="message-header">
+                            <p>Error</p>
+                        </div>
+                        <div class="message-body">
+                            {modalErrorMessage}
+                        </div>
+                    </div>
+                {/if}
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" on:click={close}></button>
+    </div>
+{/if}
 
 <div class="columns is-centered">
 
@@ -119,23 +167,28 @@
                 <p><i class="far fa-folder-open"/> <span>No users found for these filters</span></p>
             {:else}
                 <div class="table-container">
-                    <table class="table is-fullwidth">
+                    <table class="table is-fullwidth is-hoverable">
                         <thead>
                         <th>Name</th>
                         <th>Scope</th>
+                        <th></th>
                         </thead>
                         <tbody>
                         {#each userFilterList as user}
-                            <tr on:click={clicked(user)}>
-                                <td>
+                            <tr>
+                                <td on:click={clicked(user)}>
                                     {user.name}
                                 </td>
-                                <td>
+                                <td on:click={clicked(user)}>
                                     {#if user.scope === "admin"}
                                         <span class="tag is-danger is-uppercase">{user.scope}</span>
                                     {:else }
                                         <span class="tag is-primary is-uppercase">{user.scope}</span>
                                     {/if}
+                                </td>
+
+                                <td>
+                                    <button class="delete is-large" on:click={del(user)}></button>
                                 </td>
                             </tr>
                         {/each}
