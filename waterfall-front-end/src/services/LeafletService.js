@@ -5,6 +5,7 @@ export class LeafletMap {
     control = {};
     overlays = {};
     markers = [];
+    onClick;
 
     baseLayers = {
         Terrain: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -18,7 +19,8 @@ export class LeafletMap {
         }),
     };
 
-    constructor(id, descriptor, activeLayer = "") {
+    constructor(id, descriptor, activeLayer = "", onClick) {
+        this.onClick = onClick;
         let defaultLayer = this.baseLayers.Terrain;
         if (activeLayer) {
             defaultLayer = this.baseLayers[activeLayer];
@@ -65,7 +67,8 @@ export class LeafletMap {
 
     addMarker(location, popupText = "", layerTitle = "default", id) {
         let group = {};
-        let marker = L.marker([location.lat, location.lng]);
+        let marker = L.marker([location.lat, location.lng], {title: "test"});
+        marker.on('click', this.onClick);
         if (popupText) {
             var popup = L.popup({autoClose: false, closeOnClick: false, closeButton: false});
             popup.setContent(popupText);
@@ -82,9 +85,14 @@ export class LeafletMap {
         this.markers.push({id: id, marker: marker});
     }
 
-    changeLocationOfMarker(id, location){
-        const marker = this.markers.find(m => m.id = id);
+    changeLocationOfMarker(id, location) {
+        const marker = this.markers.find(m => m.id === id);
         marker.marker.setLatLng(location);
+    }
+
+    findIdForLocation(location) {
+        const marker = this.markers.find(m => m.marker._latlng === location);
+        return marker.id;
     }
 
     invalidateSize() {
@@ -93,7 +101,7 @@ export class LeafletMap {
         hiddenMethodMap._onResize();
     }
 
-    getCenterOfMap(){
+    getCenterOfMap() {
         return this.imap.getCenter();
     }
 }
