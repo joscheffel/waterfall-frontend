@@ -66,7 +66,7 @@
     );
 
     function clicked(user) {
-        push("/admin/" + user._id);
+        push(`/admin/${user._id}`);
     }
 
     function filterApplied() {
