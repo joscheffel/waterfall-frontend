@@ -4,6 +4,7 @@ export class LeafletMap {
     imap = {};
     control = {};
     overlays = {};
+    markers = [];
 
     baseLayers = {
         Terrain: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -55,14 +56,14 @@ export class LeafletMap {
 
     moveTo(zoom, location) {
         this.imap.setZoom(zoom);
-        this.imap.panTo(new L.LatLng(location.lat, location.lng));
+        this.imap.panTo(new L.LatLng(location.lat, location.lng), {animate: true, duration: 1});
     }
 
     zoomTo(location) {
         this.imap.setView(new L.LatLng(location.lat, location.lng), 8);
     }
 
-    addMarker(location, popupText = "", layerTitle = "default") {
+    addMarker(location, popupText = "", layerTitle = "default", id) {
         let group = {};
         let marker = L.marker([location.lat, location.lng]);
         if (popupText) {
@@ -78,6 +79,12 @@ export class LeafletMap {
             group = this.overlays[layerTitle];
         }
         marker.addTo(group);
+        this.markers.push({id: id, marker: marker});
+    }
+
+    changeLocationOfMarker(id, location){
+        const marker = this.markers.find(m => m.id = id);
+        marker.marker.setLatLng(location);
     }
 
     invalidateSize() {

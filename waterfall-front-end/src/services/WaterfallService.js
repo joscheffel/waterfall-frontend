@@ -11,10 +11,7 @@ export class WaterfallService {
         if (waterfallCredentials) {
             const savedUser = JSON.parse(waterfallCredentials);
             user.set({
-                email: savedUser.email,
-                token: savedUser.token,
-                userid: savedUser.userid,
-                isAdmin: savedUser.isAdmin,
+                email: savedUser.email, token: savedUser.token, userid: savedUser.userid, isAdmin: savedUser.isAdmin,
             });
             axios.defaults.headers.common.Authorization = "Bearer " + savedUser.token;
         }
@@ -48,10 +45,7 @@ export class WaterfallService {
 
     async logout() {
         user.set({
-            email: "",
-            token: "",
-            userid: "",
-            isAdmin: false,
+            email: "", token: "", userid: "", isAdmin: false,
         });
         localStorage.removeItem("waterfall");
         axios.defaults.headers.common.Authorization = "";
@@ -60,10 +54,7 @@ export class WaterfallService {
     async signup(firstName, lastName, email, password) {
         try {
             const userDetails = {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
+                firstName: firstName, lastName: lastName, email: email, password: password,
             };
             await axios.post(this.baseUrl + "/register", userDetails);
             return true;
@@ -98,9 +89,9 @@ export class WaterfallService {
             return u;
         } catch (err) {
             console.log(err);
-            if(err.message) {
+            if (err.message) {
                 return {error: err.name, message: err.message};
-            }else{
+            } else {
                 return {error: err.response.data.error, message: err.response.data.message};
             }
         }
@@ -124,17 +115,11 @@ export class WaterfallService {
     async createWaterfall(name, description, continent, size, lat, long) {
         const userid = await getUserId();
         const createWaterfall = {
-            name: name,
-            description: description,
-            categories: {
-                continent: continent,
-                size: size,
-            },
-            location: {
-                lat: lat,
-                long: long,
-            },
-            userid: userid,
+            name: name, description: description, categories: {
+                continent: continent, size: size,
+            }, location: {
+                lat: lat, long: long,
+            }, userid: userid,
         }
         try {
             const waterfall = await axios.post(this.baseUrl + "/api/waterfalls", createWaterfall);
@@ -146,24 +131,50 @@ export class WaterfallService {
 
     async updateWaterfall(id, userid, v, name, description, continent, size, lat, long) {
         const createWaterfall = {
-            _id: id,
-            __v: v,
-            name: name,
-            description: description,
-            categories: {
-                continent: continent,
-                size: size,
-            },
-            location: {
-                lat: lat,
-                long: long,
-            },
-            userid: userid,
+            _id: id, __v: v, name: name, description: description, categories: {
+                continent: continent, size: size,
+            }, location: {
+                lat: lat, long: long,
+            }, userid: userid,
         }
         try {
             const waterfall = await axios.put(this.baseUrl + "/api/waterfalls/" + id, createWaterfall);
             return waterfall.data;
         } catch (err) {
+            return {error: err.response.data.error, message: err.response.data.message};
+        }
+    }
+
+    async uploadPicture(name, waterfallid, image) {
+        const formData = new FormData();
+        formData.append('file', image, image.name);
+        formData.append('waterfallId', waterfallid);
+        formData.append('name', name);
+
+        try {
+            const img = await axios.post(this.baseUrl + "/api/images", formData);
+            return img.data
+        } catch (err) {
+            return {error: err.response.data.error, message: err.response.data.message};
+        }
+    }
+
+    async getAllImagesForWaterfall(waterfallid) {
+        try {
+            const images = await axios.get(this.baseUrl + "/api/images/" + waterfallid);
+            return Array.from(images.data);
+        } catch (err) {
+            console.log(err);
+            return {error: err.response.data.error, message: err.response.data.message};
+        }
+    }
+
+    async retrieveImage(imageUrl) {
+        try {
+            const imageBuffer = await axios.get(this.baseUrl + "/" + imageUrl, { responseType:"blob" });
+            return imageBuffer.data;
+        } catch (err) {
+            console.log(err);
             return {error: err.response.data.error, message: err.response.data.message};
         }
     }

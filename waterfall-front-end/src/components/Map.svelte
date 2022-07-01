@@ -42,6 +42,10 @@
     export function getCurrentCenter(){
         return  map.getCenterOfMap();
     }
+
+    export function changeMarkerLocation(id, location){
+        map.changeLocationOfMarker(id, location);
+    }
 </script>
 
 <div class="box" id="donation-map" style="height:{height}px">

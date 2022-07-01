@@ -101,28 +101,29 @@
 {#if Object.keys(waterfallFilterList).length === 0}
     <p><i class="far fa-folder-open"/> <span>No waterfalls found for these filters</span></p>
 {:else}
-    <div class="table-container">
-    <table class="table is-fullwidth is-hoverable">
-        <thead>
-        <th>Name</th>
-        <th>Categories</th>
-        </thead>
+    <div class="table-container tableFixHead">
+        <table class="table is-fullwidth is-hoverable">
 
-        <tbody>
-        {#each waterfallFilterList as waterfall}
-            <tr on:click={clicked(waterfall)}>
-                <td>
-                    {waterfall.name}
-                </td>
-                <td>
-                    <span class="tag is-primary">{waterfall.categories.continent}</span>
-                    <span class="tag is-info">{waterfall.categories.size}</span>
-                </td>
-            </tr>
-        {/each}
+            <thead>
+            <th>Name</th>
+            <th>Categories</th>
+            </thead>
 
-        </tbody>
-    </table>
+            <tbody>
+                {#each waterfallFilterList as waterfall}
+                    <tr on:click={clicked(waterfall)}>
+                        <td>
+                            {waterfall.name}
+                        </td>
+                        <td>
+                            <span class="tag is-primary">{waterfall.categories.continent}</span>
+                            <span class="tag is-info">{waterfall.categories.size}</span>
+                        </td>
+                    </tr>
+                {/each}
+
+            </tbody>
+        </table>
     </div>
 {/if}
 
@@ -132,6 +133,10 @@
         max-height: 13em;
         overflow: auto;
     }
+
+    .tableFixHead          { overflow: auto; height: 20em; }
+    .tableFixHead thead th { position: sticky; top: 0; z-index: 1; background: white}
+
     tr {
         min-width: 100%;
     }
