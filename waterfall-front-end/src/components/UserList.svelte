@@ -1,7 +1,7 @@
 <script>
     import {createEventDispatcher, getContext, onMount} from "svelte";
     import {push} from "svelte-spa-router";
-    import Chart from 'svelte-frappe-charts';
+    import MultipleTypeChart from "./MultipleTypeChart.svelte";
 
     const dispatch = createEventDispatcher();
 
@@ -47,7 +47,7 @@
         const averageAllPwdLength = (analyticsAdmin.cumPwdLength + analyticsUser.cumPwdLength) / (analyticsAdmin.num + analyticsUser.num);
 
         averagePwdLength = {
-            labels: ["All","Admin", "User"],
+            labels: ["All", "Admin", "User"],
             datasets: [
                 {
                     values: [averageAllPwdLength, averageAdminPwdLength, averageUserPwdLength],
@@ -147,13 +147,7 @@
     </div>
 
     <div class="column is-3 m-2">
-        <div class="box">
-            <h2 class="title is-6 has-text-centered">Privilege Proportion</h2>
-            <Chart data={privilegeDistributionData} type="pie"/>
-        </div>
-        <div class="box">
-            <h2 class="title is-6 has-text-centered">Average Password Length</h2>
-            <Chart data={averagePwdLength} type="bar"/>
-        </div>
+        <MultipleTypeChart title="Privilege Proportion" data={privilegeDistributionData} type="pie"/>
+        <MultipleTypeChart title="Average Password Length" data={averagePwdLength} type="bar"/>
     </div>
 </div>
