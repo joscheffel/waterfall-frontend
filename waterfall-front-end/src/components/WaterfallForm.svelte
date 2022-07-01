@@ -3,6 +3,7 @@
     import {isUserItselfOrAdmin} from "../services/userUtils.js";
     import {push} from "svelte-spa-router";
     import Coordinates from "./Coordinates.svelte";
+    import ImageUpload from "./ImageUpload.svelte";
 
     export let waterfallid = false;
     export let title = null;
@@ -81,7 +82,7 @@
 
         let response;
         if (waterfall) {
-            response = await waterfallService.updateWaterfall(waterfall._id, waterfall.userid, waterfall.__v, name.value, description.value, selectedContinent, selectedSize, lat.value, long.value);
+            response = await waterfallService.updateWaterfall(waterfall._id, waterfall.userid, waterfall.__v, name.value, description.value, selectedContinent, selectedSize, lat, lng);
         } else {
             response = await waterfallService.createWaterfall(name.value, description.value, selectedContinent, selectedSize, lat, lng);
         }
@@ -91,6 +92,7 @@
         }
 
         if (response._id) {
+            waterfallid = response._id;
             dispatch("message", {waterfall: response});
         }
     }
@@ -171,6 +173,7 @@
         <button class="button is-primary is-light is-2" on:click={moveTo}>Check Coordinates</button>
         <button class="button is-info is-light is-2" on:click={askForCenter}>Set Coordinates of Map Center</button>
     </div>
+
     {#if errorMessages.length > 0}
         <div class="message is-danger">
             <div class="message-header">
@@ -190,3 +193,5 @@
         </div>
     </div>
 </div>
+
+<ImageUpload waterfallid={waterfallid}/>

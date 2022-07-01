@@ -2,8 +2,11 @@
     import {getContext} from "svelte";
     import {push} from "svelte-spa-router";
     import {isAdmin, isUserItselfOrAdmin} from "../services/userUtils.js";
+    import ImageList from "./ImageList.svelte";
 
     let waterfall = null;
+
+    let waterfallId;
 
     const waterfallService = getContext("WaterfallService");
 
@@ -12,8 +15,9 @@
     export async function selectWaterfall(selectedWaterfallId) {
         waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
         const user = await waterfallService.getUserDetails(waterfall.userid);
-        checkPrivileges();
+        await checkPrivileges();
         waterfall.user = user;
+        waterfallId = waterfall._id;
     }
 
     async function checkPrivileges() {
@@ -48,7 +52,6 @@
         {/if}
     </h1>
 
-
     <div class="columns">
         <div class="column">
             {#if waterfall.description}
@@ -60,6 +63,8 @@
             <span class="tag is-info">{waterfall.categories.size}</span>
         </div>
     </div>
+
+    <ImageList waterfallId={waterfallId}/>
 {:else }
     <p>Select a waterfall.</p>
 {/if}

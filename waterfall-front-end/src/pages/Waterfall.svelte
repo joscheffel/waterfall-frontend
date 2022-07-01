@@ -3,12 +3,14 @@
     import TitleBar from "../components/TitleBar.svelte";
     import Navigator from "../components/Navigator.svelte";
     import Map from "../components/Map.svelte";
+    import {push} from "svelte-spa-router";
 
     let waterfallMap;
     let waterfallForm;
 
     function waterfallAdded(event) {
-        waterfallMap.addWaterfallMarker(event.detail.waterfall);
+        // waterfallMap.addWaterfallMarker(event.detail.waterfall);
+        push("/waterfalls/edit/" + event.detail.waterfall._id);
     }
 
     function moveTo(event) {

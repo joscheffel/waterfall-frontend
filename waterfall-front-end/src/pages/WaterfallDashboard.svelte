@@ -17,7 +17,8 @@
     }
 
     let map;
-    function moveTo(event){
+
+    function moveTo(event) {
         map.moveToLocation(event.detail);
     }
 
@@ -33,12 +34,16 @@
 </div>
 
 <div class="columns">
-    <div class="column  box has-text-centered is-half m-3">
-        <Map bind:this={map} height="300"/>
-        <WaterfallDetails bind:this="{waterfallDetails}"/>
+    <div class="column has-text-centered is-half m-3">
+        <div class="box">
+            <Map bind:this={map} height="300"/>
+            <WaterfallDetails bind:this="{waterfallDetails}"/>
+        </div>
     </div>
-    <div class="column box has-text-centered m-3">
-        <h1 class="title is-4">All the Waterfalls around the globe</h1>
-        <WaterfallList on:selectedWaterfallId={waterfallSelected} on:location={moveTo}/>
+    <div class="column has-text-centered m-3">
+        <div class="box">
+            <h1 class="title is-4">All the Waterfalls around the globe</h1>
+            <WaterfallList on:selectedWaterfallId={waterfallSelected} on:location={moveTo}/>
+        </div>
     </div>
 </div>
