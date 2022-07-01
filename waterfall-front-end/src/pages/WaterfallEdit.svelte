@@ -48,7 +48,7 @@
 </div>
 
 
-<div class="columns is-vcentered">
+<div class="columns">
     <div class="column has-text-centered">
         <Map bind:this={waterfallMap}/>
     </div>

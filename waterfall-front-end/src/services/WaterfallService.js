@@ -13,14 +13,14 @@ export class WaterfallService {
             user.set({
                 email: savedUser.email, token: savedUser.token, userid: savedUser.userid, isAdmin: savedUser.isAdmin,
             });
-            axios.defaults.headers.common.Authorization = "Bearer " + savedUser.token;
+            axios.defaults.headers.common.Authorization = `Bearer ${savedUser.token}`;
         }
     }
 
     async login(email, password) {
         try {
             const response = await axios.post(`${this.baseUrl}/api/users/authenticate`, {email, password});
-            axios.defaults.headers.common.Authorization = "Bearer" + response.data.token;
+            axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
             if (response.data.success) {
                 user.set({
                     email: email,
@@ -56,7 +56,7 @@ export class WaterfallService {
             const userDetails = {
                 firstName: firstName, lastName: lastName, email: email, password: password,
             };
-            await axios.post(this.baseUrl + "/register", userDetails);
+            await axios.post(`${this.baseUrl}/register`, userDetails);
             return true;
         } catch (err) {
             return false;
@@ -65,7 +65,7 @@ export class WaterfallService {
 
     async getUserAnalyticsList() {
         try {
-            const userAnalyticsList = await axios.get(this.baseUrl + "/admin/api/analytics");
+            const userAnalyticsList = await axios.get(`${this.baseUrl}/admin/api/analytics`);
             return Array.from(userAnalyticsList.data);
         } catch (err) {
             console.log(err);
@@ -74,18 +74,18 @@ export class WaterfallService {
     }
 
     async getUserAnalytics(userid) {
-        const userAnalytics = await axios.get(this.baseUrl + "/admin/api/analytics/" + userid);
+        const userAnalytics = await axios.get(`${this.baseUrl}/admin/api/analytics/${userid}`);
         return userAnalytics.data;
     }
 
     async getUserDetails(userid) {
-        const user = await axios.get(this.baseUrl + "/api/users/" + userid);
+        const user = await axios.get(`${this.baseUrl}/api/users/${userid}`);
         return user.data;
     }
 
     async updateUser(user) {
         try {
-            const u = await axios.put(this.baseUrl + "/api/users/" + user._id, user);
+            const u = await axios.put(`${this.baseUrl}/api/users/${user._id}`, user);
             return u;
         } catch (err) {
             console.log(err);
@@ -97,14 +97,28 @@ export class WaterfallService {
         }
     }
 
+    async deleteUser(userid) {
+        try {
+            const response = await axios.delete(`${this.baseUrl}/api/users/${userid}`);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+            if (err.message) {
+                return {error: err.name, message: err.message};
+            } else {
+                return {error: err.response.data.error, message: err.response.data.message};
+            }
+        }
+    }
+
     async getWaterfallDetails(waterfallId) {
-        const waterfall = await axios.get(this.baseUrl + "/api/waterfalls/" + waterfallId);
+        const waterfall = await axios.get(`${this.baseUrl}/api/waterfalls/${waterfallId}`);
         return waterfall.data;
     }
 
     async getWaterfalls() {
         try {
-            const waterfalls = await axios.get(this.baseUrl + "/api/waterfalls");
+            const waterfalls = await axios.get(`${this.baseUrl}/api/waterfalls`);
             return Array.from(waterfalls.data);
         } catch (err) {
             console.log(err);
@@ -122,7 +136,7 @@ export class WaterfallService {
             }, userid: userid,
         }
         try {
-            const waterfall = await axios.post(this.baseUrl + "/api/waterfalls", createWaterfall);
+            const waterfall = await axios.post(`${this.baseUrl}/api/waterfalls`, createWaterfall);
             return waterfall.data;
         } catch (err) {
             return {error: err.response.data.error, message: err.response.data.message};
@@ -138,7 +152,7 @@ export class WaterfallService {
             }, userid: userid,
         }
         try {
-            const waterfall = await axios.put(this.baseUrl + "/api/waterfalls/" + id, createWaterfall);
+            const waterfall = await axios.put(`${this.baseUrl}/api/waterfalls/${id}`, createWaterfall);
             return waterfall.data;
         } catch (err) {
             return {error: err.response.data.error, message: err.response.data.message};
@@ -152,8 +166,8 @@ export class WaterfallService {
         formData.append('name', name);
 
         try {
-            const img = await axios.post(this.baseUrl + "/api/images", formData);
-            return img.data
+            const img = await axios.post(`${this.baseUrl}/api/images`, formData);
+            return img.data;
         } catch (err) {
             return {error: err.response.data.error, message: err.response.data.message};
         }
@@ -161,7 +175,7 @@ export class WaterfallService {
 
     async getAllImagesForWaterfall(waterfallid) {
         try {
-            const images = await axios.get(this.baseUrl + "/api/images/" + waterfallid);
+            const images = await axios.get(`${this.baseUrl}/api/images/${waterfallid}`);
             return Array.from(images.data);
         } catch (err) {
             console.log(err);
@@ -171,11 +185,25 @@ export class WaterfallService {
 
     async retrieveImage(imageUrl) {
         try {
-            const imageBuffer = await axios.get(this.baseUrl + "/" + imageUrl, { responseType:"blob" });
+            const imageBuffer = await axios.get(`${this.baseUrl}/${imageUrl}`, {responseType: "blob"});
             return imageBuffer.data;
         } catch (err) {
             console.log(err);
             return {error: err.response.data.error, message: err.response.data.message};
+        }
+    }
+
+    async deleteImage(imageId) {
+        try {
+            const response = await axios.delete(`${this.baseUrl}/api/images/${imageId}`)
+            return response.data;
+        } catch (err) {
+            console.log(err);
+            if (err.message) {
+                return {error: err.name, message: err.message};
+            } else {
+                return {error: err.response.data.error, message: err.response.data.message};
+            }
         }
     }
 }

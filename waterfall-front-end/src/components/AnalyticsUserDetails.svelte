@@ -1,7 +1,7 @@
 <script>
     import {getContext, onMount} from "svelte";
     import {push} from "svelte-spa-router";
-    import Chart from "svelte-frappe-charts";
+    import MultipleTypeChart from "./MultipleTypeChart.svelte";
 
     export let userid = null;
     let user;
@@ -50,11 +50,11 @@
     }
 
     function clickedWaterfall(waterfallId) {
-        push("/waterfalls/edit/" + waterfallId);
+        push(`/waterfalls/edit/${waterfallId}`);
     }
 
     function edit(userid) {
-        push("/users/" + userid);
+        push(`/users/${userid}`);
     }
 </script>
 
@@ -97,15 +97,11 @@
                 {/if}
             </div>
             <div class="column is-half">
-                <div class="box">
-                    <h2 class="title is-6 has-text-centered">Added Waterfall Continent Proportion</h2>
-                    <Chart data={waterfallContinentProportion} type="bar"/>
-                </div>
 
-                <div class="box">
-                    <h2 class="title is-6 has-text-centered">Added Waterfall Size Proportion</h2>
-                    <Chart data={waterfallSizeProportion} type="pie"/>
-                </div>
+                <MultipleTypeChart title="Added Waterfall Continent Proportion" data={waterfallContinentProportion}
+                                   type="bar"/>
+
+                <MultipleTypeChart title="Added Waterfall Size Proportion" data={waterfallSizeProportion} type="pie"/>
             </div>
         </div>
     </div>

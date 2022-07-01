@@ -9,8 +9,7 @@
     let waterfallForm;
 
     function waterfallAdded(event) {
-        // waterfallMap.addWaterfallMarker(event.detail.waterfall);
-        push("/waterfalls/edit/" + event.detail.waterfall._id);
+        push(`/waterfalls/edit/${event.detail.waterfall._id}`);
     }
 
     function moveTo(event) {
