@@ -3,6 +3,7 @@
     import {push} from "svelte-spa-router";
     import {isAdmin, isUserItselfOrAdmin} from "../services/userUtils.js";
     import ImageList from "./ImageList.svelte";
+    import ImageGallery from "./ImageGallery.svelte";
 
     let waterfall = null;
 
@@ -66,7 +67,7 @@
         </div>
     </div>
 
-    <ImageList waterfallId={waterfallId}/>
+    <ImageGallery bind:waterfallId={waterfallId}/>
 {:else }
     <p>Select a waterfall.</p>
 {/if}
