@@ -1,7 +1,7 @@
 <script>
     import TitleBar from "../components/TitleBar.svelte";
     import Navigator from "../components/Navigator.svelte";
-    import Map from "../components/Map.svelte";
+    import MultiMap from "../components/MultiMap.svelte";
 </script>
 
 <div class="columns is-vcentered">
@@ -13,4 +13,4 @@
     </div>
 </div>
 
-<Map/>
+<MultiMap/>

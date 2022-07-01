@@ -3,6 +3,7 @@
     import {push} from "svelte-spa-router";
     import {isAdmin, isUserItselfOrAdmin} from "../services/userUtils.js";
     import ImageList from "./ImageList.svelte";
+    import ImageGallery from "./ImageGallery.svelte";
 
     let waterfall = null;
 
@@ -13,11 +14,13 @@
     let privileged;
 
     export async function selectWaterfall(selectedWaterfallId) {
-        waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
-        const user = await waterfallService.getUserDetails(waterfall.userid);
-        await checkPrivileges();
-        waterfall.user = user;
-        waterfallId = waterfall._id;
+        if (selectedWaterfallId) {
+            waterfall = await waterfallService.getWaterfallDetails(selectedWaterfallId);
+            const user = await waterfallService.getUserDetails(waterfall.userid);
+            await checkPrivileges();
+            waterfall.user = user;
+            waterfallId = waterfall._id;
+        }
     }
 
     async function checkPrivileges() {
@@ -64,7 +67,7 @@
         </div>
     </div>
 
-    <ImageList waterfallId={waterfallId}/>
+    <ImageGallery bind:waterfallId={waterfallId}/>
 {:else }
     <p>Select a waterfall.</p>
 {/if}
