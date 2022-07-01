@@ -97,6 +97,20 @@ export class WaterfallService {
         }
     }
 
+    async deleteUser(userid) {
+        try {
+            const response = await axios.delete(`${this.baseUrl}/api/users/${userid}`);
+            return response.data;
+        } catch (err) {
+            console.log(err);
+            if (err.message) {
+                return {error: err.name, message: err.message};
+            } else {
+                return {error: err.response.data.error, message: err.response.data.message};
+            }
+        }
+    }
+
     async getWaterfallDetails(waterfallId) {
         const waterfall = await axios.get(this.baseUrl + "/api/waterfalls/" + waterfallId);
         return waterfall.data;
@@ -153,7 +167,7 @@ export class WaterfallService {
 
         try {
             const img = await axios.post(this.baseUrl + "/api/images", formData);
-            return img.data
+            return img.data;
         } catch (err) {
             return {error: err.response.data.error, message: err.response.data.message};
         }
@@ -171,11 +185,25 @@ export class WaterfallService {
 
     async retrieveImage(imageUrl) {
         try {
-            const imageBuffer = await axios.get(this.baseUrl + "/" + imageUrl, { responseType:"blob" });
+            const imageBuffer = await axios.get(this.baseUrl + "/" + imageUrl, {responseType: "blob"});
             return imageBuffer.data;
         } catch (err) {
             console.log(err);
             return {error: err.response.data.error, message: err.response.data.message};
+        }
+    }
+
+    async deleteImage(imageId) {
+        try {
+            const response = await axios.delete(`${this.baseUrl}/api/images/${imageId}`)
+            return response.data;
+        } catch (err) {
+            console.log(err);
+            if (err.message) {
+                return {error: err.name, message: err.message};
+            } else {
+                return {error: err.response.data.error, message: err.response.data.message};
+            }
         }
     }
 }
