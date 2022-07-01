@@ -21,6 +21,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "leaflet": "^1.8.0",
+    "svelte-frappe-charts": "^1.9.2",
     "svelte-spa-router": "^3.2.0"
   }
 }
