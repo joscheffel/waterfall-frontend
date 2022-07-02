@@ -14,4 +14,6 @@ service with `npm run dev`.
 ### Deployment
 
 To run it at a remote server you need to first build the app with: `npm run build`. Then you can deploy it on your
-remote server. An easier way is to use [netlify](https://www.netlify.com/).
+remote server. 
+An easier way is to use [netlify](https://www.netlify.com/).
+Don't forget to update the waterfall service url in App.svelte to the URL of the backend server.

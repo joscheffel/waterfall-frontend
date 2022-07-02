@@ -1,5 +1,4 @@
 <script>
-    import 'leaflet/dist/leaflet.css';
     import {createEventDispatcher, getContext, onMount} from "svelte";
     import {LeafletMap} from "../services/LeafletService.js";
 
